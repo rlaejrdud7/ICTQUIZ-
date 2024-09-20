@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>에이블 정보통신 퀴즈</title>
+    
+    <!-- CSS 파일 연결 -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    
+    <div class="quiz-container" id="quiz-container">
+        <h1>에이블과 함께하는 신나는 정보통신 퀴즈!</h1>
+        <p>타이머: <span id="timer">60</span>초</p>
+
+        <!-- 첫 번째 페이지 (문제 1-2) -->
+        <div class="question-page" id="page1">
+            <div class="question">
+                <h3>1. 컴퓨터끼리 데이터를 주고받는 것을 무엇이라고 할까요?</h3>
+                <div class="answer">
+                    <input type="radio" name="q1" value="1" id="q1a1">
+                    <label for="q1a1">통신</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q1" value="0" id="q1a2">
+                    <label for="q1a2">편지</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q1" value="0" id="q1a3">
+                    <label for="q1a3">비행기</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <h3>2. 스마트폰에서 무선으로 인터넷에 연결하는 방법은?</h3>
+                <div class="answer">
+                    <input type="radio" name="q2" value="0" id="q2a1">
+                    <label for="q2a1">USB</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q2" value="1" id="q2a2">
+                    <label for="q2a2">Wi-Fi</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q2" value="0" id="q2a3">
+                    <label for="q2a3">HDMI</label>
+                </div>
+            </div>
+
+            <button onclick="nextPage(2)">다음</button>
+        </div>
+
+        <!-- 두 번째 페이지 (문제 3-5) -->
+        <div class="question-page" id="page2" style="display:none;">
+            <div class="question">
+                <h3>3. 디지털 정보의 가장 작은 단위를 의미하는 단위는?</h3>
+                <div class="answer">
+                    <input type="radio" name="q3" value="1" id="q3a1">
+                    <label for="q3a1">비트 (bit)</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q3" value="0" id="q3a2">
+                    <label for="q3a2">바이트(byte)</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q3" value="0" id="q3a3">
+                    <label for="q3a3">페타파이트(Petabyte)</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <h3>4. 인터넷에서 정보를 검색할 때 사용하는 프로그램은?</h3>
+                <div class="answer">
+                    <input type="radio" name="q4" value="1" id="q4a1">
+                    <label for="q4a1">웹 브라우저</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q4" value="0" id="q4a2">
+                    <label for="q4a2">문서 편집기</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q4" value="0" id="q4a3">
+                    <label for="q4a3">계산기</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <h3>5. 인터넷에서 정보를 주고받는 규칙을 무엇이라고 할까요?</h3>
+                <div class="answer">
+                    <input type="radio" name="q5" value="1" id="q5a1">
+                    <label for="q5a1">프로토콜</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q5" value="0" id="q5a2">
+                    <label for="q5a2">패킷</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q5" value="0" id="q5a3">
+                    <label for="q5a3">주소</label>
+                </div>
+            </div>
+
+            <button onclick="checkAnswers()">결과 확인</button>
+        </div>
+
+        <!-- 결과를 보여줄 영역 -->
+        <div class="result" id="result"></div>
+
+        <!-- 점수 및 신나는 피드백 영역 -->
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <script>
+        let timeLeft = 60;
+        const timerElement = document.getElementById('timer');
+        const resultElement = document.getElementById('result');
+        const feedbackElement = document.getElementById('feedback');
+
+        // 타이머 기능
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                resultElement.textContent = '시간이 다 되었어요! 결과를 확인하세요.';
+                feedbackElement.innerHTML = '<span class="lose">타임 오버! 다시 도전해보세요!</span>';
+            }
+        }, 1000);
+
+        // 다음 페이지로 이동하는 함수
+        function nextPage(page) {
+            const currentPage = document.getElementById(`page${page - 1}`);
+            const nextPage = document.getElementById(`page${page}`);
+
+            currentPage.style.display = 'none';
+            nextPage.style.display = 'block';
+        }
+
+        // 정답 체크 함수
+        function checkAnswers() {
+            clearInterval(timerInterval);
+
+            const correctAnswers = [1, 1, 1, 1, 1];
+            let score = 0;
+
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            const q5 = document.querySelector('input[name="q5"]:checked');
+
+            if (q1 && q1.value == correctAnswers[0]) score++;
+            if (q2 && q2.value == correctAnswers[1]) score++;
+            if (q3 && q3.value == correctAnswers[2]) score++;
+            if (q4 && q4.value == correctAnswers[3]) score++;
+            if (q5 && q5.value == correctAnswers[4]) score++;
+
+            resultElement.textContent = "당신의 점수는 " + score + " / 5 입니다.";
+
+            if (score === 5) {
+                feedbackElement.innerHTML = '<span class="win">완벽해요! 정보통신에 대해 잘 알고 있네요!</span>';
+            } else if (score >= 3) {
+                feedbackElement.innerHTML = '<span class="average">괜찮아요! 조금만 더 공부하면 금방 전문가가 될 수 있어요.</span>';
+            } else {
+                feedbackElement.innerHTML = '<span class="lose">다시 도전해 보세요! 분명 더 잘할 수 있어요!</span>';
+            }
+        }
+    </script>
+
+</body>
+</html>
